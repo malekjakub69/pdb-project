@@ -1,2 +1,2 @@
-# pdf-project
+# pde-project
 Project do předmětu pokročilé databázové systémy
