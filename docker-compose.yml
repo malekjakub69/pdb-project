@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    build: ./app
+    ports:
+      - 5123:5123
+    volumes:
+      - ./app:/code
+    depends_on:
+      - db-sql
+      - db-nosql
+
+  db-sql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  db-nosql:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
