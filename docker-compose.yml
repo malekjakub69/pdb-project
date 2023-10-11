@@ -3,20 +3,23 @@ services:
   web:
     build: ./app
     ports:
-      - 5123:5123
+      - "5123:5123"
     volumes:
-      - ./app:/code
+      - ./app:/app
     depends_on:
-      - db-sql
-      - db-nosql
+      - db
+      - mongo
 
-  db-sql:
-    image: mysql
+  db:
+    platform: linux/x86_64
+    image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: mySuperSecurePassword
+      MYSQL_DATABASE: mySQLdb
+    volumes:
+      - ./data/mysql:/var/lib/mysql
 
-  db-nosql:
+  mongo:
     image: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./data/mongo:/data/db
