@@ -1,16 +1,18 @@
 from flask import Flask
 from flask_restful import Resource, Api
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-api = Api(app)
+    api = Api(app)
 
-# init database
-# from src.models import db, init_db
+    from src.resources import register_resources
 
-@app.route('/')
-def hello():
-    return '<h1>Hello, World!</h1>'
+    register_resources(api)
+
+    return app
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5123)
+    app = create_app()
+    app.run(debug=True, host="0.0.0.0",port=5123)
