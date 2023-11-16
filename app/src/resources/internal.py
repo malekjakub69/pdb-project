@@ -1,11 +1,7 @@
 import json
-from flask import session
 from flask_restful import Resource
 
 from src.models.user import User
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-from src.models import engine
 
 
 class HealthCheckResource(Resource):
@@ -14,26 +10,23 @@ class HealthCheckResource(Resource):
 
 
 class HealthCheckDatabaseResource(Resource):
+    """
+    Resource for checking the health of the database.
+    Attempts to create a new role, retrieve it, and delete it.
+    Returns a success message if the database is working properly.
+    """
+
     def get(self):
         try:
-            # to check database we will execut
-            session = Session(engine)
-            newUser = User(
-                username="test",
-                email="test@test.cz",
-                first_name="test",
-                last_name="test",
-            )
-            session.add(newUser)
-            session.commit()
+            new_user = User(first_name="test", last_name="test2", email="test@test.cz")
+            new_user.save()
 
-            user = session.execute(select(User).where(User.username == "test").first())
+            user = User.query.filter_by(email="test@test.cz").first()
 
-            session.delete(user)
-            session.commit()
+            user.delete()
 
         except Exception as e:
             output = str(e)
             return output, 400
 
-        return json.dumps(user.all()), 200
+        return json.dumps("Db works"), 200

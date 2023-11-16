@@ -1,15 +1,12 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase
+from flask_sqlalchemy import SQLAlchemy
 
-from sqlalchemy import create_engine
-engine = create_engine("mysql+pymysql://mysql:mySuperSecurePassword@db:3306/mySQLdb", echo=True)
+db = SQLAlchemy()
 
-class BaseModel(DeclarativeBase):
-    pass
 
-from src.models.user import User
-from src.models.article import Article
-from src.models.comment import Comment
-from src.models.like import Like
-from src.models.read import Read
-from src.models.region import Region
+def init_db():
+    from src.models.user import User
+    from src.models.article import Article
+    from src.models.comment import Comment
+    from src.models.like import Like
+    from src.models.read import Read
+    from src.models.region import Region

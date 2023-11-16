@@ -1,18 +1,13 @@
-from src.models.base import BaseIdModel
-from datetime import datetime
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
-from sqlalchemy.orm import relationship
+from src.models import db
+from src.models.base import BaseModel
 
-
-class Read(BaseIdModel):
+class Read(BaseModel):
     __tablename__ = "read"
 
-    timestamp: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=db.func.now())
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    user: Mapped["User"] = relationship(back_populates="reads")
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="reads")
 
-    article_id: Mapped[int] = mapped_column(ForeignKey("article.id"))
-    article: Mapped["Article"] = relationship(back_populates="reads")
+    article_id = db.Column(db.Integer, db.ForeignKey("article.id"))
+    article = db.relationship("Article", back_populates="reads")
