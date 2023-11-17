@@ -30,6 +30,6 @@ class UsersResource(Resource):
                 "message": "User data",
                 "user_id": user_id,
                 "data": serialized_result,
-                "data_count": 1,
+                "data_count": len(list([result])),
             }
         )
