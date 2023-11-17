@@ -1,5 +1,4 @@
 from flask_restful import Resource
-from flask_pymongo import PyMongo
 from bson import json_util
 from flask import current_app, jsonify
 from bson import ObjectId

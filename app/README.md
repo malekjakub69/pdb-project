@@ -11,6 +11,7 @@ folder models contains all db models
 
 - GET {url}/test - Tests MongoDB connection (200, OK)
 - GET {url}/api/user_feed/{USER_ID} - Generates feed for user
+- GET {url}/api/tends/{TIMEFRAME (hour | day | week | month | year)}/{?REGION_ID} - Trends per timeframe (and optionally region)
 
 ## Data fixtures
 

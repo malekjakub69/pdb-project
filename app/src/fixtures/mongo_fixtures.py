@@ -59,6 +59,7 @@ def generate_dummy_data():
         article = {
             "author": user_guid,
             "title": fake.sentence(),
+            "timestamp": fake.date_time_this_decade(),
             "perex": fake.text(max_nb_chars=200),
             "content": fake.text(),
             "tags": fake.words(nb=3),
@@ -83,7 +84,7 @@ def generate_dummy_data():
 
             # 0 Like, 1 Read
             interaction = {
-                "timestamp": fake.date_time_this_decade(),
+                "timestamp": fake.date_time_this_year(),
                 "type": fake.random_element(elements=(0, 1)),
                 "user": user_id,
                 "article": article_id,
@@ -100,14 +101,12 @@ def generate_dummy_data():
             user_id = fake.random_element(
                 elements=users_collection.find().distinct("_id")
             )
-            timestamp = fake.date_time_this_decade()
-            comment_text = fake.text(max_nb_chars=200)
 
             comment = {
                 "user": user_id,
                 "article": article_id,
-                "timestamp": timestamp,
-                "text": comment_text,
+                "timestamp": fake.date_time_this_year(),
+                "text": fake.text(max_nb_chars=200),
             }
             comments.append(comment)
     print("Inserting comments...")
