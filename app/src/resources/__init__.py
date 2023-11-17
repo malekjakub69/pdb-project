@@ -2,6 +2,7 @@ from src.resources.internal import *
 from src.resources.mongo.test import *
 from src.resources.mongo.user_feed import *
 from src.resources.mongo.trends import *
+from src.resources.mongo.users import *
 
 
 def register_resources(api):
@@ -14,3 +15,4 @@ def register_resources(api):
     api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
     api.add_resource(TrendsResourceWithRegion, "/api/trends/<string:timeframe>/<string:region_id>")
     api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
+    api.add_resource(UsersResource, "/api/users/<string:user_id>")
