@@ -1,5 +1,7 @@
 from src.resources.internal import *
-from src.resources.mongo import *
+from src.resources.mongo.test import *
+from src.resources.mongo.user_feed import *
+
 
 def register_resources(api):
     # Internal
@@ -8,3 +10,4 @@ def register_resources(api):
 
     # MongoDB
     api.add_resource(MongoTestResource, "/test")
+    api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
