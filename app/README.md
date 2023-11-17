@@ -17,6 +17,8 @@ folder models contains all db models
 - - GET {url}/api/interactions/like/{ARTICLE_ID}/{USER_ID} - If user liked the article (200, OK)
 - - GET {url}/api/interactions/read/{ARTICLE_ID}/{USER_ID} - If user read the article (200, OK)
 - GET {url}/api/articles/{ARTICLE_ID} - Article data (200, OK)
+- GET {url}/api/comments/{ARTICLE_ID} - Comments (200, OK)
+  
 
 ## Data fixtures
 
