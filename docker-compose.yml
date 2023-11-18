@@ -11,7 +11,6 @@ services:
       - mongo
 
   db:
-    platform: linux/x86_64
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: mySuperSecurePassword
@@ -23,3 +22,23 @@ services:
     image: mongo
     volumes:
       - ./data/mongo:/data/db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: mySuperSecurePassword
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  mongo-express:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
