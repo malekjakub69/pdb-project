@@ -16,6 +16,8 @@ class MongoTestResource(Resource):
             {
                 "message": "Test Mongo endpoint",
                 "documents": serialized_documents,
-                "document_count": len(documents),
+                "document_count": documents.explain()
+                .get("executionStats", {})
+                .get("nReturned"),
             }
         )

@@ -6,7 +6,7 @@ from src.resources.mongo.users import *
 from src.resources.mongo.interactions import *
 from src.resources.mongo.articles import *
 from src.resources.mongo.comments import *
-
+from src.resources .mysql.test import *
 
 def register_resources(api):
     # Internal
@@ -14,7 +14,7 @@ def register_resources(api):
     api.add_resource(HealthCheckDatabaseResource, "/healthcheck_db")
 
     # MongoDB
-    api.add_resource(MongoTestResource, "/test")
+    api.add_resource(MongoTestResource, "/mongo/test")
     api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
     api.add_resource(TrendsResourceWithRegion, "/api/trends/<string:timeframe>/<string:region_id>")
     api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
@@ -24,3 +24,6 @@ def register_resources(api):
     api.add_resource(InteractionsBaseResource, "/api/interactions/<string:article_id>/<string:user_id>")
     api.add_resource(ArticlesResource, "/api/articles/<string:article_id>")
     api.add_resource(CommentsResource, "/api/comments/<string:article_id>")
+
+    # MySQL
+    api.add_resource(MysqlTestResource, "/mysql/test")
