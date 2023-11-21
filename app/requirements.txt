@@ -10,4 +10,5 @@ SQLAlchemy==2.0.22
 structlog==22.2.0
 pymysql==1.1.0
 Flask-PyMongo==2.3.0
-Faker==8.17.0
+Faker==8.16.0
+pika==1.2.0

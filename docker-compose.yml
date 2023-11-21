@@ -9,6 +9,7 @@ services:
     depends_on:
       - db
       - mongo
+      - rabbitmq
 
   db:
     image: mysql:5.7
@@ -42,3 +43,13 @@ services:
       - "8081:8081"
     depends_on:
       - mongo
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: pdb-project_rabbitmq_1
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitMqUser
+      RABBITMQ_DEFAULT_PASS: mySuperSecurePassword
+    ports:
+      - "5672:5672"
+      - "15672:15672"
