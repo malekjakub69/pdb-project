@@ -10,3 +10,9 @@ class Region(BaseModel):
 
     users = db.relationship("User", back_populates="region")
 
+    def get_dict(self):
+        return {
+            "id": self.id,
+            "iso_code": self.iso_code,
+            "country_name": self.country_name,
+        }
