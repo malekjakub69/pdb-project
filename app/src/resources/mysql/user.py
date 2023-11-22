@@ -7,7 +7,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 class SQLUsersResource(Resource):
     def get(self):
         users = User.get_items()
-        return ({"users": [user.get_dict() for user in users]}, 201)
+        return ({"users": [user.get_full_dict() for user in users]}, 201)
 
 
 class SQLUserResource(Resource):
@@ -34,7 +34,7 @@ class SQLUserResource(Resource):
             region_id=data["region_id"],
         )
         user.save()
-        return ({"user": user.get_dict()}, 201)
+        return ({"user": user.get_full_dict()}, 201)
 
     def delete(self, user_id: int):
         if not (user := User.get_by_id(user_id)):

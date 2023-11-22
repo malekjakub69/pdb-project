@@ -8,9 +8,7 @@ def create_app():
     app = Flask(__name__)
 
     # MySQL Configuration
-    app.config[
-        "SQLALCHEMY_DATABASE_URI"
-    ] = "mysql+pymysql://root:mySuperSecurePassword@db:3306/mySQLdb"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:mySuperSecurePassword@db:3306/mySQLdb"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # MongoDB Configuration

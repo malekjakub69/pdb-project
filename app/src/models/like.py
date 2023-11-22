@@ -13,10 +13,18 @@ class Like(BaseModel):
     article_id = db.Column(db.Integer, db.ForeignKey("article.id"))
     article = db.relationship("Article", back_populates="likes")
 
+    def get_full_dict(self):
+        return {
+            "id": self.id,
+            "timestamp": self.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
+            "user": self.user.get_dict(),
+            "article": self.article.get_dict(),
+        }
+
     def get_dict(self):
         return {
             "id": self.id,
-            "timestamp": self.timestamp,
+            "timestamp": self.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
             "user_id": self.user_id,
             "article_id": self.article_id,
         }

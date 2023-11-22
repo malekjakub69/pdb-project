@@ -18,7 +18,7 @@ class Article(BaseModel):
 
     reads = db.relationship("Read", back_populates="article")
 
-    def get_dict(self):
+    def get_full_dict(self):
         return {
             "id": self.id,
             "title": self.title,
@@ -28,4 +28,16 @@ class Article(BaseModel):
             "comments": [comment.get_dict() for comment in self.comments],
             "likes": [like.get_dict() for like in self.likes],
             "reads": [read.get_dict() for read in self.reads],
+        }
+
+    def get_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "perex": self.perex,
+            "content": self.content,
+            "author_id": self.author_id,
+            "comments": [comment.id for comment in self.comments],
+            "likes": [like.id for like in self.likes],
+            "reads": [read.id for read in self.reads],
         }
