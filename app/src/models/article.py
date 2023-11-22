@@ -2,8 +2,6 @@ from src.models import db
 from src.models.base import BaseModel
 
 
-
-
 class Article(BaseModel):
     __tablename__ = "article"
 
@@ -19,3 +17,27 @@ class Article(BaseModel):
     likes = db.relationship("Like", back_populates="article")
 
     reads = db.relationship("Read", back_populates="article")
+
+    def get_full_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "perex": self.perex,
+            "content": self.content,
+            "author_id": self.author_id,
+            "comments": [comment.get_dict() for comment in self.comments],
+            "likes": [like.get_dict() for like in self.likes],
+            "reads": [read.get_dict() for read in self.reads],
+        }
+
+    def get_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "perex": self.perex,
+            "content": self.content,
+            "author_id": self.author_id,
+            "comments": [comment.id for comment in self.comments],
+            "likes": [like.id for like in self.likes],
+            "reads": [read.id for read in self.reads],
+        }

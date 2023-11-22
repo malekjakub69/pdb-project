@@ -1,4 +1,4 @@
-from typing import TypeVar
+from typing import Type, TypeVar
 from werkzeug.exceptions import InternalServerError
 
 from src.models import db
@@ -29,7 +29,11 @@ class BaseModel(db.Model):
             db.session.commit()
         except Exception as e:
             raise InternalServerError(str(e))
-        
+
     @classmethod
-    def get_by_id(cls, id):
-        return cls.query.get(id)
+    def get_by_id(cls: Type[T], id_: int) -> T:
+        return cls.query.filter_by(id=id_).first()
+
+    @classmethod
+    def get_items(cls):
+        return cls.query.all()
