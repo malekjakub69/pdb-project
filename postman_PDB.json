@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "bcf4983b-bb18-40ba-9aed-fb3d77216863",
+		"name": "PDB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18545920",
+		"_collection_link": "https://lunar-zodiac-315828.postman.co/workspace/Team-Workspace~77f16d21-5240-43b7-8fad-217eaa4e2dd4/collection/18545920-bcf4983b-bb18-40ba-9aed-fb3d77216863?action=share&source=collection_link&creator=18545920"
+	},
+	"item": [
+		{
+			"name": "get users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/users",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/user/7",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create new user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/user",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/user/4",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/articles",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get article",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/article/7",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"article",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create new article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"{{$randomLoremWord}}\",\n    \"perex\": \"{{$randomLoremWord}}\",\n    \"content\": \"{{$randomLoremText}}\",\n    \"author_id\": 9\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/article",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"article"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete article",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/user/2",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":7,\n    \"article_id\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/read",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"read"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":7,\n    \"article_id\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/like",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unlike article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\":7,\n    \"article_id\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/unlike",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"unlike"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comment Article",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"author_id\":7,\n    \"article_id\":1,\n    \"comment\": \"{{$randomLoremText}}\",\n    \"country_name\": \"{{$randomCountry}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/comment",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/comment/2",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"comment",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "localhost:5123/api/mysql",
+			"type": "string"
+		}
+	]
+}
