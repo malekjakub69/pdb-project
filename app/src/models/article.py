@@ -9,6 +9,8 @@ class Article(BaseModel):
     perex = db.Column(db.String(512), nullable=False)
     content = db.Column(db.Text(), nullable=False)
 
+    max_comments = db.Column(db.Integer, nullable=False, default=10)
+
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     author = db.relationship("User", back_populates="articles")
 

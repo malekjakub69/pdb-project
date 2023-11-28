@@ -20,6 +20,8 @@ class SQLCommentResource(Resource):
             raise BadRequest("article_id_required")
         if not (article := Article.get_by_id(data["article_id"])):
             raise NotFound("entity_not_found")
+        if article.max_comments <= len(article.comments):
+            raise BadRequest("max_comments_reached")
 
         comment = Comment(
             author=author,
