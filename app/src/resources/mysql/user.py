@@ -1,3 +1,4 @@
+from src.models.region import Region
 from src.models.user import User
 import json
 from flask_restful import Resource, request
@@ -26,12 +27,15 @@ class SQLUserResource(Resource):
         if exist_user:
             raise BadRequest("user_exist")
 
+        if "region_id" in data and not Region.get_by_id(data["region_id"]):
+            raise BadRequest("entity_not_found")
+
         user = User(
             username=data["username"],
             email=data["email"],
             first_name=data["first_name"],
             last_name=data["last_name"],
-            region_id=data["region_id"],
+            region_id=data["region_id"] if "region_id" in data else None,
         )
         user.save()
         return ({"user": user.get_full_dict()}, 201)
