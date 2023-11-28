@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate, upgrade, init, migrate
 from flask_restful import Api
+from flask_cors import CORS
 from flask_pymongo import PyMongo
 
 
@@ -50,6 +51,7 @@ def create_app():
                 migrate(message="automatic migration")
                 upgrade()
 
+    _ = CORS(app)
     # Initialize Flask-Migrate for MySQL
     _ = Migrate(app, db)
     handle_migrations()
