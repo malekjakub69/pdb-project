@@ -1,86 +1,104 @@
-// URL API, na kterou chcete odeslat POST požadavek
-const apiURL = 'http://localhost:5123/';
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const expect = chai.expect;
 
-// Funkce pro zobrazení odpovědi na webové stránce
-function displayResponse(responseData, elementId) {
-    const output = document.getElementById(elementId);
-    output.innerHTML = responseData
-}
+chai.use(chaiHttp);
 
-// Funkce pro odeslání dat pomocí POST požadavku
-function postData(url, test_name, data, ok_code = 200) {
-    const newURL = apiURL + "api/mysql/" + url
-    fetch(newURL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => {
-            displayResponse("Correct", test_name);
-            console.log(test_name + ": ", response);
-            return response.data
-        })
-        .catch(error => {
-            displayResponse(error.status === ok_code ? "Correct " : "Error", test_name);
-            console.log(test_name + ": ", error);
-        });
-}
+const apiUrl = "http://localhost:5123/api/mysql"; // replace with your API url
 
-function deleteData(url, test_name, id, ok_code = 200) {
-    const newURL = apiURL + "api/mysql/" + url
-    fetch(newURL + "/" + id, {
-        method: 'DELETE',
-    })
-        .then(response => {
-            displayResponse("Correct", test_name);
-            console.log(test_name + ": ", response);
-            return response.data
-        })
-        .catch(error => {
-            displayResponse(error.status === ok_code ? "Correct " : "Error", test_name);
-            console.log(test_name + ": ", error);
-        });
-}
+describe("API Tests", function () {
+    it("should get all users", function (done) {
+        chai.request(apiUrl)
+            .get('/users')
+            .end(function (err, res) {
+                expect(res).to.have.status(200);
+                expect(res.body.users).to.be.a('array');
+                done();
+            });
+    });
+
+    it("should get all articles", function (done) {
+        chai.request(apiUrl)
+            .get('/articles')
+            .end(function (err, res) {
+                expect(res).to.have.status(200);
+                expect(res.body.articles).to.be.a('array');
+                done();
+            });
+    });
+
+    it("should create, not duplicate, and delete a user", function (done) {
+        const testUser = { username: "Test User", email: "test@example.com", first_name: "test", last_name: "test" };
+
+        // Create a new user
+        chai.request(apiUrl)
+            .post('/user')
+            .send(testUser)
+            .end(function (err, res) {
+                expect(res).to.have.status(201);
+                expect(res.body).to.be.a('object');
+                const createdUserId = res.body.user.id;
+
+                // Try to create the same user
+                chai.request(apiUrl)
+                    .post('/user')
+                    .send(testUser)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(400); // assuming your API returns 409 for duplicate users
+
+                        // Delete the user
+                        chai.request(apiUrl)
+                            .delete(`/user/${createdUserId}`)
+                            .end(function (err, res) {
+                                expect(res).to.have.status(200);
+
+                                done();
+                            });
+                    });
+            });
+    });
+
+    it("should create a user, create an article with that user as author, and delete the article", function (done) {
+        const testUser = { username: "Test User", email: "test@example.com", first_name: "test", last_name: "test" };
+
+        // Create a new user
+        chai.request(apiUrl)
+            .post('/user')
+            .send(testUser)
+            .end(function (err, res) {
+                expect(res).to.have.status(201);
+                expect(res.body).to.be.a('object');
+                const createdUserId = res.body.user.id;
+
+                const testArticle = { title: "Test Article", content: "Test Content", perex: "perex", author_id: createdUserId };
+
+                // Create a new article
+                chai.request(apiUrl)
+                    .post('/article')
+                    .send(testArticle)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(201);
+                        expect(res.body).to.be.a('object');
+                        const createdArticleId = res.body.article.id;
+
+                        // Delete the article
+                        chai.request(apiUrl)
+                            .delete(`/article/${createdArticleId}`)
+                            .end(function (err, res) {
+                                expect(res).to.have.status(200);
+
+                                // Delete the user
+                                chai.request(apiUrl)
+                                    .delete(`/user/${createdUserId}`)
+                                    .end(function (err, res) {
+                                        expect(res).to.have.status(200);
+
+                                        done();
+                                    });
+                            });
+                    });
+            });
+    });
 
 
-function getData(url, test_name, ok_code = 200) {
-    const newURL = apiURL + "api/mysql/" + url
-    fetch(newURL)
-        .then(response => {
-            displayResponse("Correct", test_name);
-            console.log(test_name + ": ", response);
-            return response.data
-        })
-        .catch(error => {
-            displayResponse(error.status === ok_code ? "Correct " : "Error", test_name);
-            console.log(test_name + ": ", error);
-        });
-}
-
-async function userTest() {
-    let user = {
-        email: "test@test.cz",
-        username: "test",
-        first_name: "test",
-        last_name: "test"
-    }
-    user = await postData("user", "create_user", user)
-    await postData("user", "create_user_2", user, ok_code = 400)
-    await deleteData("user", "delete_user", user.id)
-
-}
-
-getData("test", "mysql_test")
-getData("users", "get_users")
-getData("articles", "get_articles")
-
-userTest()
-
-const article = {
-    title: "Article title",
-    perex: "test",
-    content: "test"
-}
-//test_post("article", "create_article", article)
+});

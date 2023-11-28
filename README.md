@@ -34,3 +34,16 @@ python - Flask  SQL MySQL + NoSQL Mongo
 Unittests, test of whole app
 
 Overleaf project : https://www.overleaf.com/7719443261vzqtftnvfgtw
+
+
+## run tests
+
+You must be in `/tests` folder in your terminal
+
+before first run: 
+
+```npm install ```
+
+run test 
+
+```npm test```
