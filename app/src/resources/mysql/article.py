@@ -6,7 +6,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 class SQLArticlesResource(Resource):
     def get(self):
         articles = Article.get_items()
-        return ({"users": [article.get_full_dict() for article in articles]}, 201)
+        return ({"users": [article.get_full_dict() for article in articles]}, 200)
 
 
 class SQLArticleResource(Resource):
@@ -35,4 +35,4 @@ class SQLArticleResource(Resource):
         if not (article := Article.get_by_id(article_id)):
             raise NotFound("entity_not_found")
         article.delete()
-        return "entity_deleted", 204
+        return "entity_deleted", 200

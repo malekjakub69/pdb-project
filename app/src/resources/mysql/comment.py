@@ -37,4 +37,4 @@ class SQLCommentResource(Resource):
         if not (comment := Comment.get_by_id(comment_id)):
             raise NotFound("entity_not_found")
         comment.delete()
-        return "entity_deleted", 204
+        return "entity_deleted", 200

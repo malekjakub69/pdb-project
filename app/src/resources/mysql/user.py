@@ -8,7 +8,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 class SQLUsersResource(Resource):
     def get(self):
         users = User.get_items()
-        return ({"users": [user.get_full_dict() for user in users]}, 201)
+        return ({"users": [user.get_full_dict() for user in users]}, 200)
 
 
 class SQLUserResource(Resource):
@@ -44,4 +44,4 @@ class SQLUserResource(Resource):
         if not (user := User.get_by_id(user_id)):
             raise NotFound("entity_not_found")
         user.delete()
-        return ({"message": "entity_deleted"}, 201)
+        return ({"message": "entity_deleted"}, 200)
