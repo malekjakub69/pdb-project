@@ -12,7 +12,7 @@ class InteractionsBaseResource(Resource):
         if not user_id.startswith("user_"):
             user_id = f"user_{user_id}"
 
-        match_condition = {"article": article_id, "user": user_id}
+        match_condition = {"article_id": article_id, "user_id": user_id}
         if interaction_type is not None:
             match_condition["type"] = interaction_type
 
