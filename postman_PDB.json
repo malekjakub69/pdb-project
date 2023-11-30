@@ -49,7 +49,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\"\n}",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\"last_name\": \"{{$randomLastName}}\"\n, \"region_iso_code\": \"{{$randomIsoCode}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
