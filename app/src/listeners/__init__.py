@@ -5,6 +5,7 @@ from src.listeners.comment import start_comment_listener
 from src.listeners.user import start_user_listener
 from src.listeners.like import start_like_listener
 from src.listeners.read import start_read_listener
+from src.listeners.region import start_region_listener
 
 
 def register_listeners(mongo):
@@ -25,3 +26,6 @@ def register_listeners(mongo):
 
     read_listener_thread = threading.Thread(target=start_read_listener, args=(mongo,))
     read_listener_thread.start()
+
+    region_listener_thread = threading.Thread(target=start_region_listener, args=(mongo,))
+    region_listener_thread.start()

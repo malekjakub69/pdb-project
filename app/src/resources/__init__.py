@@ -11,6 +11,7 @@ from src.resources.mongo.users import *
 from src.resources.mongo.interactions import *
 from src.resources.mongo.articles import *
 from src.resources.mongo.comments import *
+from src.resources.mongo.regions import *
 from src.resources.mysql.test import *
 
 
@@ -21,21 +22,30 @@ def register_resources(api):
 
     # MongoDB
     api.add_resource(MongoTestResource, "/mongo/test")
+    # TRENDS
     api.add_resource(TrendsResourceWithRegion, "/api/trends/<string:timeframe>/<string:region_id>")
     api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
+    # USER
     api.add_resource(UserResource, "/api/user/<string:user_id>")
     api.add_resource(UsersResource, "/api/users/")
+    # FEED
     api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
+    # INTERACTIONS
     api.add_resource(LikesResource, "/api/interactions/like/<string:article_id>/<string:user_id>")
     api.add_resource(ReadsResource, "/api/interactions/read/<string:article_id>/<string:user_id>")
     api.add_resource(
         InteractionsBaseResource,
         "/api/interactions/<string:article_id>/<string:user_id>",
     )
+    # ARTICLE
     api.add_resource(ArticleResource, "/api/article/<string:article_id>")
     api.add_resource(ArticlesResource, "/api/articles")
+    # COMMENT
     api.add_resource(CommentsResource, "/api/comments/<string:article_id>")
     api.add_resource(CommentResource, "/api/comment/<string:comment_id>")
+    # REGION
+    api.add_resource(RegionsResource, "/api/regions")
+    api.add_resource(RegionResource, "/api/region/<string:region_id>")
 
     # MySQL
     api.add_resource(MysqlTestResource, "/api/mysql/test")
