@@ -3,6 +3,7 @@ from src.resources.mysql.like import *
 from src.resources.mysql.read import *
 from src.resources.mysql.article import *
 from src.resources.mysql.user import *
+from src.resources.mysql.region import *
 from src.resources.internal import *
 from src.resources.mongo.test import *
 from src.resources.mongo.user_feed import *
@@ -11,6 +12,7 @@ from src.resources.mongo.users import *
 from src.resources.mongo.interactions import *
 from src.resources.mongo.articles import *
 from src.resources.mongo.comments import *
+from src.resources.mongo.regions import *
 from src.resources.mysql.test import *
 
 
@@ -21,18 +23,30 @@ def register_resources(api):
 
     # MongoDB
     api.add_resource(MongoTestResource, "/mongo/test")
-    api.add_resource(UserFeedResource, "/api/user_feed/<int:user_id>")
-    api.add_resource(TrendsResourceWithRegion, "/api/trends/<int:timeframe>/<int:region_id>")
-    api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<int:timeframe>")
-    api.add_resource(UsersResource, "/api/users/<int:user_id>")
-    api.add_resource(LikesResource, "/api/interactions/like/<int:article_id>/<int:user_id>")
-    api.add_resource(ReadsResource, "/api/interactions/read/<int:article_id>/<int:user_id>")
+    # TRENDS
+    api.add_resource(TrendsResourceWithRegion, "/api/trends/<string:timeframe>/<string:region_id>")
+    api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
+    # USER
+    api.add_resource(UserResource, "/api/user/<string:user_id>")
+    api.add_resource(UsersResource, "/api/users/")
+    # FEED
+    api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
+    # INTERACTIONS
+    api.add_resource(LikesResource, "/api/interactions/like/<string:article_id>/<string:user_id>")
+    api.add_resource(ReadsResource, "/api/interactions/read/<string:article_id>/<string:user_id>")
     api.add_resource(
         InteractionsBaseResource,
-        "/api/interactions/<int:article_id>/<int:user_id>",
+        "/api/interactions/<string:article_id>/<string:user_id>",
     )
-    api.add_resource(ArticlesResource, "/api/articles/<int:article_id>")
-    api.add_resource(CommentsResource, "/api/comments/<int:article_id>")
+    # ARTICLE
+    api.add_resource(ArticleResource, "/api/article/<string:article_id>")
+    api.add_resource(ArticlesResource, "/api/articles")
+    # COMMENT
+    api.add_resource(CommentsResource, "/api/comments/<string:article_id>")
+    api.add_resource(CommentResource, "/api/comment/<string:comment_id>")
+    # REGION
+    api.add_resource(RegionsResource, "/api/regions")
+    api.add_resource(RegionResource, "/api/region/<string:region_id>")
 
     # MySQL
     api.add_resource(MysqlTestResource, "/api/mysql/test")
@@ -51,3 +65,6 @@ def register_resources(api):
     # LIKE
     api.add_resource(SQLLikeResource, "/api/mysql/like")  # POST
     api.add_resource(SQLUnlikeResource, "/api/mysql/unlike")  # POST
+    # REGION
+    api.add_resource(SQLRegionsResource, "/api/regions") # GET all
+    api.add_resource(SQLRegionResource, "/api/mysql/region", "/api/mysql/region/<int:region_id>")  # GET single, POST, DELETE

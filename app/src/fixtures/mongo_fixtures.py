@@ -86,9 +86,9 @@ def generate_dummy_data():
             interaction = {
                 "timestamp": fake.date_time_this_year(),
                 "type": fake.random_element(elements=(0, 1)),
-                "user": user_id,
-                "article": article_id,
-                "region": user_region,
+                "user_id": user_id,
+                "article_id": article_id,
+                "region_id": user_region,
                 "tags": tags_from_liked_article,
             }
             interactions.append(interaction)

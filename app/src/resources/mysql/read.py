@@ -3,6 +3,8 @@ from src.models.user import User
 from src.models.read import Read
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
+from src.broker.wrapper import TransferObject
+from src.broker.broker import publish_to_queue
 
 
 class SQLReadResource(Resource):
@@ -19,7 +21,7 @@ class SQLReadResource(Resource):
             raise NotFound("entity_not_found")
 
         if Read.query.filter_by(user_id=data["user_id"], article_id=data["article_id"]).first():
-            return ({}, 208)
+            return ({"message": "already_read"}, 208)
 
         read = Read(
             user=user,
@@ -27,4 +29,15 @@ class SQLReadResource(Resource):
         )
         read.save()
 
-        return ({"message": "readed"}, 201)
+        transfer = {
+            "timestamp": read.timestamp,
+            "type": 1,
+            "user_id": read.user_id,
+            "article_id": read.article_id,
+            "region_id": read.user.region_id,
+            "tags": read.article.tags if read.article.tags else []
+        }
+        transfer_object = TransferObject('insert', 'interaction', transfer)
+        publish_to_queue(transfer_object.to_dict(), 'read')
+
+        return ({"message": "read"}, 201)

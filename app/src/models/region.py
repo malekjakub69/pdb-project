@@ -1,5 +1,6 @@
 from src.models import db
-from src.models.base import BaseModel
+from src.models.base import BaseModel, T
+from typing import Type
 
 
 class Region(BaseModel):
@@ -24,3 +25,9 @@ class Region(BaseModel):
             "iso_code": self.iso_code,
             "country_name": self.country_name,
         }
+
+    @classmethod
+    def get_by_iso_code(cls: Type[T], id_string: str) -> T:
+        id_string = id_string.lower()
+        region = cls.query.filter(Region.iso_code == id_string).first()
+        return region

@@ -1,7 +1,8 @@
 from src.models.article import Article
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
-
+from src.broker.broker import publish_to_queue
+from src.broker.wrapper import TransferObject
 
 class SQLArticlesResource(Resource):
     def get(self):
@@ -29,10 +30,17 @@ class SQLArticleResource(Resource):
         )
         article.save()
 
+        transfer_object = TransferObject('insert', 'article', article.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), 'article')
+
         return ({"user": article.get_full_dict()}, 201)
 
     def delete(self, article_id: int):
         if not (article := Article.get_by_id(article_id)):
             raise NotFound("entity_not_found")
         article.delete()
+
+        transfer_object = TransferObject('delete', 'article', {'id': article_id})
+        publish_to_queue(transfer_object.to_dict(), 'article')
+
         return "entity_deleted", 204
