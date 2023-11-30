@@ -9,8 +9,11 @@ class UsersResource(Resource):
         mongo = current_app.extensions["pymongo"]
         users_collection = mongo.db.users
 
+        if not user_id.startswith("article_"):
+            user_id = f"article_{user_id}"
+
         pipeline = [
-            {"$match": {"_id": ObjectId(user_id)}},
+            {"$match": {"_id": user_id}},
             {
                 "$lookup": {
                     "from": "regions",

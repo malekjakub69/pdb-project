@@ -3,6 +3,8 @@ from src.models.user import User
 from src.models.like import Like
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
+from src.broker.wrapper import TransferObject
+from src.broker.broker import publish_to_queue
 
 
 class SQLLikeResource(Resource):
@@ -27,6 +29,9 @@ class SQLLikeResource(Resource):
         )
         like.save()
 
+        transfer_object = TransferObject('insert', 'interaction', like.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), 'like')
+
         return ({"message": "article_liked"}, 201)
 
 
@@ -47,5 +52,8 @@ class SQLUnlikeResource(Resource):
             raise BadRequest("article_not_liked")
 
         like.delete()
+
+        transfer_object = TransferObject('delete', 'interaction', like.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), 'like')
 
         return ({"message": "article_unliked"}, 201)

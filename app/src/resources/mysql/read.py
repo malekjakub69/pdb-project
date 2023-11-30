@@ -3,6 +3,8 @@ from src.models.user import User
 from src.models.read import Read
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
+from src.broker.wrapper import TransferObject
+from src.broker.broker import publish_to_queue
 
 
 class SQLReadResource(Resource):
@@ -27,4 +29,7 @@ class SQLReadResource(Resource):
         )
         read.save()
 
-        return ({"message": "readed"}, 201)
+        transfer_object = TransferObject('insert', 'interaction', read.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), 'read')
+
+        return ({"message": "read"}, 201)

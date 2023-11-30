@@ -34,6 +34,7 @@ def register_resources(api):
     api.add_resource(ArticleResource, "/api/article/<string:article_id>")
     api.add_resource(ArticlesResource, "/api/articles")
     api.add_resource(CommentsResource, "/api/comments/<string:article_id>")
+    api.add_resource(CommentResource, "/api/comment/<string:comment_id>")
 
     # MySQL
     api.add_resource(MysqlTestResource, "/api/mysql/test")

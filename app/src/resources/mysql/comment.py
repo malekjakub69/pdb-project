@@ -3,7 +3,8 @@ from src.models.user import User
 from src.models.comment import Comment
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
-
+from src.broker.broker import publish_to_queue
+from src.broker.wrapper import TransferObject
 
 class SQLCommentResource(Resource):
     def post(self):
@@ -31,10 +32,17 @@ class SQLCommentResource(Resource):
         )
         comment.save()
 
+        transfer_object = TransferObject('insert', 'comment', comment.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), 'comment')
+
         return ({"comment": comment.get_full_dict()}, 201)
 
     def delete(self, comment_id: int):
         if not (comment := Comment.get_by_id(comment_id)):
             raise NotFound("entity_not_found")
         comment.delete()
+
+        transfer_object = TransferObject('delete', 'comment', {'id': comment_id})
+        publish_to_queue(transfer_object.to_dict(), 'comment')
+
         return "entity_deleted", 204

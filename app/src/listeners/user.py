@@ -3,9 +3,9 @@ from src.broker.broker import get_rabbitmq_connection
 import sys
 import json
 
-def article_callback(ch, method, properties, body, mongo):
+def user_callback(ch, method, properties, body, mongo):
     message = body.decode()
-    articles_collection = mongo.db.articles
+    users_collection = mongo.db.users
 
     print('Received ' + message, file=sys.stderr, flush=True)
 
@@ -16,10 +16,15 @@ def article_callback(ch, method, properties, body, mongo):
         operation = transfer_object.operation
         data = transfer_object.data
 
+        data.pop('articles', None)
+        data.pop('comments', None)
+        data.pop('likes', None)
+        data.pop('reads', None)
+
         if operation == 'insert':
-            articles_collection.insert_one(data)
+            users_collection.insert_one(data)
         elif operation == 'delete':
-            articles_collection.delete_one({'_id': data['_id']})
+            users_collection.delete_one({'_id': data['_id']})
         else:
             print(f"Unsupported operation: {operation}", file=sys.stderr, flush=True)
 
@@ -28,18 +33,18 @@ def article_callback(ch, method, properties, body, mongo):
     except Exception as e:
         print(f"Error processing message: {e}", file=sys.stderr, flush=True)
 
-def start_article_listener(mongo):
+def start_user_listener(mongo):
     connection = get_rabbitmq_connection()
     channel = connection.channel()
 
-    queue_name = "article"
+    queue_name = "user"
 
     channel.queue_declare(queue=queue_name)
     channel.basic_consume(
         queue=queue_name,
-        on_message_callback=lambda ch, method, properties, body: article_callback(ch, method, properties, body, mongo),
+        on_message_callback=lambda ch, method, properties, body: user_callback(ch, method, properties, body, mongo),
         auto_ack=True
     )
 
-    print('Started thread ARTICLE', file=sys.stderr, flush=True)
+    print('Started thread USER', file=sys.stderr, flush=True)
     channel.start_consuming()
