@@ -1,3 +1,4 @@
+import json
 from src.models.article import Article
 from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
@@ -21,9 +22,14 @@ class SQLArticleResource(Resource):
         if not data["title"]:
             raise BadRequest("title_required")
 
+        serialized_tags = None
+        if "tags" in data:
+            serialized_tags = json.dumps(data["tags"])
+
         article = Article(
             title=data["title"],
             content=data["content"],
+            tags=serialized_tags,
             author_id=data["author_id"],
             perex=data["perex"],
         )

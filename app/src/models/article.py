@@ -1,3 +1,4 @@
+import json
 from src.models import db
 from src.models.base import BaseModel
 
@@ -8,6 +9,8 @@ class Article(BaseModel):
     title = db.Column(db.String(255), nullable=False)
     perex = db.Column(db.String(512), nullable=False)
     content = db.Column(db.Text(), nullable=False)
+
+    tags = db.Column(db.Text(), nullable=True)
 
     max_comments = db.Column(db.Integer, nullable=False, default=10)
 
@@ -25,6 +28,7 @@ class Article(BaseModel):
             "id": self.id,
             "title": self.title,
             "perex": self.perex,
+            "tags": json.loads(self.tags),
             "content": self.content,
             "author_id": self.author_id,
             "comments": [comment.get_dict() for comment in self.comments],
@@ -37,6 +41,7 @@ class Article(BaseModel):
             "id": self.id,
             "title": self.title,
             "perex": self.perex,
+            "tags": json.loads(self.tags),
             "content": self.content,
             "author_id": self.author_id,
             "comments": [comment.id for comment in self.comments],
