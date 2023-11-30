@@ -32,15 +32,24 @@ class SQLUserResource(Resource):
         if exist_user:
             raise BadRequest("user_exist")
 
-        if "region_id" in data and not Region.get_by_id(data["region_id"]):
-            raise BadRequest("entity_not_found")
+        region_id = data.get("region_id")
+        region_iso_code = data.get("region_iso_code")
+
+        if region_id and not Region.get_by_id(region_id):
+            raise BadRequest("region_not_found")
+
+        if region_iso_code:
+            region = Region.get_by_iso_code(region_iso_code)
+            if not region:
+                raise BadRequest("region_not_found")
+            region_id = region.id
 
         user = User(
             username=data["username"],
             email=data["email"],
             first_name=data["first_name"],
             last_name=data["last_name"],
-            region_id=data["region_id"] if "region_id" in data else None,
+            region_id=region_id if region_id else None,
         )
         user.save()
 

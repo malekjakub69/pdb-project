@@ -16,7 +16,13 @@ def article_callback(ch, method, properties, body, mongo):
         operation = transfer_object.operation
         data = transfer_object.data
 
+        data.pop('comments', None)
+        data.pop('likes', None)
+        data.pop('reads', None)
+
         if operation == 'insert':
+            data["like_count"] = 0
+            data["read_count"] = 0
             articles_collection.insert_one(data)
         elif operation == 'delete':
             articles_collection.delete_one({'_id': data['_id']})

@@ -22,13 +22,13 @@ class TransferObject:
 
         converted_data = {}
         for key, value in original_data.items():
-            if key.endswith("_id") and len(key) > 3:
+            if key.endswith("_id") and len(key) > 3 and str(value).isnumeric():
                 original_key = key[:-3]
                 if original_key in id_aliases:
                     alias = id_aliases[original_key]
-                    converted_data[key] = f"{alias}_{value}" if str(value).isnumeric() else f"{key[:-3]}_{value}"
+                    converted_data[key] = f"{alias}_{value}"
                 else:
-                    converted_data[key] = value
+                    converted_data[key] = f"{key[:-3]}_{value}"
             else:
                 converted_data[key] = value
         return converted_data

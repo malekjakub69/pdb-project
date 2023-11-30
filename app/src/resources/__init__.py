@@ -21,10 +21,11 @@ def register_resources(api):
 
     # MongoDB
     api.add_resource(MongoTestResource, "/mongo/test")
-    api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
     api.add_resource(TrendsResourceWithRegion, "/api/trends/<string:timeframe>/<string:region_id>")
     api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
-    api.add_resource(UsersResource, "/api/users/<string:user_id>")
+    api.add_resource(UserResource, "/api/user/<string:user_id>")
+    api.add_resource(UsersResource, "/api/users/")
+    api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
     api.add_resource(LikesResource, "/api/interactions/like/<string:article_id>/<string:user_id>")
     api.add_resource(ReadsResource, "/api/interactions/read/<string:article_id>/<string:user_id>")
     api.add_resource(
