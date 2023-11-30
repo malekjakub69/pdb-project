@@ -16,6 +16,8 @@ def region_callback(ch, method, properties, body, mongo):
         operation = transfer_object.operation
         data = transfer_object.data
 
+        data.pop('users', None)
+
         if operation == 'insert':
             regions_collection.insert_one(data)
         elif operation == 'delete':

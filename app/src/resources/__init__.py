@@ -3,6 +3,7 @@ from src.resources.mysql.like import *
 from src.resources.mysql.read import *
 from src.resources.mysql.article import *
 from src.resources.mysql.user import *
+from src.resources.mysql.region import *
 from src.resources.internal import *
 from src.resources.mongo.test import *
 from src.resources.mongo.user_feed import *
@@ -64,3 +65,6 @@ def register_resources(api):
     # LIKE
     api.add_resource(SQLLikeResource, "/api/mysql/like")  # POST
     api.add_resource(SQLUnlikeResource, "/api/mysql/unlike")  # POST
+    # REGION
+    api.add_resource(SQLRegionsResource, "/api/regions") # GET all
+    api.add_resource(SQLRegionResource, "/api/mysql/region", "/api/mysql/region/<int:region_id>")  # GET single, POST, DELETE

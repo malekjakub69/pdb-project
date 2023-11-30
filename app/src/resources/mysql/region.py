@@ -22,6 +22,10 @@ class SQLRegionResource(Resource):
         if not data["iso_code"]:
             raise BadRequest("iso_code_required")
 
+        exists_region = Region.get_by_iso_code(data["iso_code"])
+        if exists_region:
+            raise BadRequest("region_exists")
+
         region = Region(
             iso_code=data["iso_code"],
             country_name=data["country_name"]
