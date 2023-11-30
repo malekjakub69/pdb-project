@@ -4,7 +4,7 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-const apiUrl = "http://localhost:5123/api/mysql"; // replace with your API url
+const apiUrl = "http://localhost:5123/api"; // replace with your API url
 
 describe("API Tests", function () {
     it("should get all users", function (done) {
@@ -12,7 +12,7 @@ describe("API Tests", function () {
             .get('/users')
             .end(function (err, res) {
                 expect(res).to.have.status(200);
-                expect(res.body.users).to.be.a('array');
+                expect(res.body.data).to.be.a('array');
                 done();
             });
     });
@@ -22,7 +22,7 @@ describe("API Tests", function () {
             .get('/articles')
             .end(function (err, res) {
                 expect(res).to.have.status(200);
-                expect(res.body.articles).to.be.a('array');
+                expect(res.body.data).to.be.a('array');
                 done();
             });
     });
@@ -32,7 +32,7 @@ describe("API Tests", function () {
 
         // Create a new user
         chai.request(apiUrl)
-            .post('/user')
+            .post('/mysql/user')
             .send(testUser)
             .end(function (err, res) {
                 expect(res).to.have.status(201);
@@ -41,14 +41,14 @@ describe("API Tests", function () {
 
                 // Try to create the same user
                 chai.request(apiUrl)
-                    .post('/user')
+                    .post('/mysql/user')
                     .send(testUser)
                     .end(function (err, res) {
-                        expect(res).to.have.status(400); // assuming your API returns 409 for duplicate users
+                        expect(res).to.have.status(400);
 
                         // Delete the user
                         chai.request(apiUrl)
-                            .delete(`/user/${createdUserId}`)
+                            .delete(`/mysql/user/${createdUserId}`)
                             .end(function (err, res) {
                                 expect(res).to.have.status(200);
 
@@ -63,7 +63,7 @@ describe("API Tests", function () {
 
         // Create a new user
         chai.request(apiUrl)
-            .post('/user')
+            .post('/mysql/user')
             .send(testUser)
             .end(function (err, res) {
                 expect(res).to.have.status(201);
@@ -74,7 +74,7 @@ describe("API Tests", function () {
 
                 // Create a new article
                 chai.request(apiUrl)
-                    .post('/article')
+                    .post('/mysql/article')
                     .send(testArticle)
                     .end(function (err, res) {
                         expect(res).to.have.status(201);
@@ -83,13 +83,13 @@ describe("API Tests", function () {
 
                         // Delete the article
                         chai.request(apiUrl)
-                            .delete(`/article/${createdArticleId}`)
+                            .delete(`/mysql/article/${createdArticleId}`)
                             .end(function (err, res) {
                                 expect(res).to.have.status(200);
 
                                 // Delete the user
                                 chai.request(apiUrl)
-                                    .delete(`/user/${createdUserId}`)
+                                    .delete(`/mysql/user/${createdUserId}`)
                                     .end(function (err, res) {
                                         expect(res).to.have.status(200);
 

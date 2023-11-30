@@ -28,7 +28,7 @@ def register_resources(api):
     api.add_resource(TrendsResourceWithoutRegion, "/api/trends/<string:timeframe>")
     # USER
     api.add_resource(UserResource, "/api/user/<string:user_id>")
-    api.add_resource(UsersResource, "/api/users/")
+    api.add_resource(UsersResource, "/api/users")
     # FEED
     api.add_resource(UserFeedResource, "/api/user_feed/<string:user_id>")
     # INTERACTIONS
@@ -51,10 +51,10 @@ def register_resources(api):
     # MySQL
     api.add_resource(MysqlTestResource, "/api/mysql/test")
     # USER
-    api.add_resource(SQLUsersResource, "/api/mysql/users")  # GET all
-    api.add_resource(SQLUserResource, "/api/mysql/user", "/api/mysql/user/<int:user_id>")  # GET single, POST, DELETE
+    # api.add_resource(SQLUsersResource, "/api/mysql/users")  # GET all
+    api.add_resource(SQLUserResource, "/api/mysql/user", "/api/mysql/user/<int:user_id>")  # POST, DELETE
     # ARTICLE
-    api.add_resource(SQLArticlesResource, "/api/mysql/articles")  # GET all
+    # api.add_resource(SQLArticlesResource, "/api/mysql/articles")  # GET all
     api.add_resource(
         SQLArticleResource, "/api/mysql/article", "/api/mysql/article/<int:article_id>"
     )  # GET single, POST, DELETE
@@ -66,5 +66,5 @@ def register_resources(api):
     api.add_resource(SQLLikeResource, "/api/mysql/like")  # POST
     api.add_resource(SQLUnlikeResource, "/api/mysql/unlike")  # POST
     # REGION
-    api.add_resource(SQLRegionsResource, "/api/regions") # GET all
-    api.add_resource(SQLRegionResource, "/api/mysql/region", "/api/mysql/region/<int:region_id>")  # GET single, POST, DELETE
+    # api.add_resource(SQLRegionsResource, "/api/regions") # GET all
+    api.add_resource(SQLRegionResource, "/api/mysql/region", "/api/mysql/region/<int:region_id>")  # POST, DELETE

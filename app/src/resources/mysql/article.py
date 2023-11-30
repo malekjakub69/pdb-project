@@ -6,17 +6,17 @@ from src.broker.broker import publish_to_queue
 from src.broker.wrapper import TransferObject
 
 
-class SQLArticlesResource(Resource):
-    def get(self):
-        articles = Article.get_items()
-        return ({"articles": [article.get_full_dict() for article in articles]}, 200)
+# class SQLArticlesResource(Resource):
+#     def get(self):
+#         articles = Article.get_items()
+#         return ({"articles": [article.get_full_dict() for article in articles]}, 200)
 
 
 class SQLArticleResource(Resource):
-    def get(self, article_id: int):
-        if not (article := Article.get_by_id(article_id)):
-            raise NotFound("entity_not_found")
-        return ({"article": article.get_dict()}, 200)
+    # def get(self, article_id: int):
+    #     if not (article := Article.get_by_id(article_id)):
+    #         raise NotFound("entity_not_found")
+    #     return ({"article": article.get_dict()}, 200)
 
     def post(self):
         data = request.get_json()
@@ -53,4 +53,4 @@ class SQLArticleResource(Resource):
         transfer_object = TransferObject("delete", "article", {"id": article_id})
         publish_to_queue(transfer_object.to_dict(), "article")
 
-        return "entity_deleted", 204
+        return "entity_deleted", 200

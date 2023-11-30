@@ -22,7 +22,7 @@ class UserResource(Resource):
                     "as": "region",
                 }
             },
-         {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
+            {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
         ]
 
         result = users_collection.aggregate(pipeline)
@@ -33,10 +33,11 @@ class UserResource(Resource):
             {
                 "message": "User data",
                 "user_id": user_id,
-                "data": serialized_result,
+                "data": user,
                 "data_count": len(user),
             }
         )
+
 
 class UsersResource(Resource):
     def get(self):
@@ -52,7 +53,7 @@ class UsersResource(Resource):
                     "as": "region",
                 }
             },
-         {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
+            {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
         ]
 
         result = users_collection.aggregate(pipeline)
@@ -62,7 +63,7 @@ class UsersResource(Resource):
         return jsonify(
             {
                 "message": "Users",
-                "data": serialized_result,
+                "data": users,
                 "data_count": len(users),
             }
         )

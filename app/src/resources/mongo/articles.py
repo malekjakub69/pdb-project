@@ -31,7 +31,7 @@ class ArticleResource(Resource):
             {
                 "message": "Article details with author",
                 "article_id": article_id,
-                "data": serialized_result,
+                "data": article,
                 "data_count": len(article),
             }
         )
@@ -60,7 +60,7 @@ class ArticlesResource(Resource):
         return jsonify(
             {
                 "message": "All articles with authors",
-                "data": serialized_all_articles,
+                "data": articles,
                 "data_count": len(articles),
             }
         )
