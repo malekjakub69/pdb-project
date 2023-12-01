@@ -7,7 +7,6 @@ def read_callback(ch, method, properties, body, mongo):
     message = body.decode()
     reads_collection = mongo.db.interactions
     articles_collection = mongo.db.articles
-    users_collection = mongo.db.users
 
     print('Received ' + message, file=sys.stderr, flush=True)
 

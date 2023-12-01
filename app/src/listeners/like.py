@@ -19,29 +19,16 @@ def like_callback(ch, method, properties, body, mongo):
         data = transfer_object.data
 
         if operation == 'insert':
-            user_id = data.get("user_id")
-            article_id = data.get("article_id")
-
-            user_data = users_collection.find_one({"_id": user_id})
-            user_region = user_data.get("region", "")
-
-            article_data = articles_collection.find_one({"_id": article_id})
-            article_tags = article_data.get("tags", [])
-
-            data["tags"] = article_tags
-            data["region"] = user_region
-            data["type"] = 0
-
             likes_collection.insert_one(data)
 
             articles_collection.update_one(
-                {"_id": article_id},
+                {"_id": data["article_id"]},
                 {"$inc": {"like_count": 1}}
             )
 
         elif operation == 'delete':
             articles_collection.update_one(
-                {"_id": data.get("article_id")},
+                {"_id": data["article_id"]},
                 {"$inc": {"like_count": -1}}
             )
 
