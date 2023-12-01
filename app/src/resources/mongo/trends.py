@@ -1,8 +1,6 @@
 from flask_restful import Resource
-from bson import json_util
 from flask import current_app, jsonify
 from datetime import timedelta, datetime
-
 
 class TrendsResourceBase(Resource):
     def get_trends(self, start_date, end_date, region_id=None, limit=10):
@@ -43,7 +41,8 @@ class TrendsResourceBase(Resource):
         if region_id:
             if not region_id.startswith("region_"):
                 region_id = f"region_{region_id}"
-            pipeline[0]["$match"]["region"] = region_id
+
+            pipeline[0]["$match"]["region_id"] = region_id
 
         result = interactions_collection.aggregate(pipeline)
 
