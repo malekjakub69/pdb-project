@@ -5,17 +5,17 @@ from werkzeug.exceptions import NotFound, BadRequest
 from src.broker.wrapper import TransferObject
 from src.broker.broker import publish_to_queue
 
-class SQLUsersResource(Resource):
-    def get(self):
-        users = User.get_items()
-        return ({"users": [user.get_full_dict() for user in users]}, 201)
+# class SQLUsersResource(Resource):
+#     def get(self):
+#         users = User.get_items()
+#         return ({"users": [user.get_full_dict() for user in users]}, 200)
 
 
 class SQLUserResource(Resource):
-    def get(self, user_id: int):
-        if not (user := User.get_by_id(user_id)):
-            raise NotFound("entity_not_found")
-        return ({"user": user.get_dict()}, 200)
+    # def get(self, user_id: int):
+    #     if not (user := User.get_by_id(user_id)):
+    #         raise NotFound("entity_not_found")
+    #     return ({"user": user.get_dict()}, 200)
 
     def post(self):
         data = request.get_json()
@@ -66,4 +66,4 @@ class SQLUserResource(Resource):
         publish_to_queue(transfer_object.to_dict(), 'user')
 
         user.delete()
-        return ({"message": "entity_deleted"}, 201)
+        return ({"message": "entity_deleted"}, 200)

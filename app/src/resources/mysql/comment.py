@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 from src.broker.broker import publish_to_queue
 from src.broker.wrapper import TransferObject
 
+
 class SQLCommentResource(Resource):
     def post(self):
         data = request.get_json()
@@ -32,8 +33,8 @@ class SQLCommentResource(Resource):
         )
         comment.save()
 
-        transfer_object = TransferObject('insert', 'comment', comment.get_full_dict())
-        publish_to_queue(transfer_object.to_dict(), 'comment')
+        transfer_object = TransferObject("insert", "comment", comment.get_full_dict())
+        publish_to_queue(transfer_object.to_dict(), "comment")
 
         return ({"comment": comment.get_full_dict()}, 201)
 
@@ -42,7 +43,7 @@ class SQLCommentResource(Resource):
             raise NotFound("entity_not_found")
         comment.delete()
 
-        transfer_object = TransferObject('delete', 'comment', {'id': comment_id})
-        publish_to_queue(transfer_object.to_dict(), 'comment')
+        transfer_object = TransferObject("delete", "comment", {"id": comment_id})
+        publish_to_queue(transfer_object.to_dict(), "comment")
 
         return "entity_deleted", 204
