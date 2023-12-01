@@ -1,5 +1,4 @@
 from flask_restful import Resource
-from bson import json_util
 from flask import current_app, jsonify
 
 class ArticleResource(Resource):
@@ -25,7 +24,6 @@ class ArticleResource(Resource):
 
         result = articles_collection.aggregate(pipeline)
         article = list(result)
-        serialized_result = json_util.dumps(article)
 
         return jsonify(
             {
@@ -55,7 +53,6 @@ class ArticlesResource(Resource):
 
         all_articles = articles_collection.aggregate(pipeline)
         articles = list(all_articles)
-        serialized_all_articles = json_util.dumps(articles)
 
         return jsonify(
             {

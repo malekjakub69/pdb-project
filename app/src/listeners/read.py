@@ -18,6 +18,8 @@ def read_callback(ch, method, properties, body, mongo):
         data = transfer_object.data
 
         if operation == 'insert':
+            if "tags" in data and isinstance(data["tags"], str):
+                data["tags"] = json.loads(data["tags"])
             reads_collection.insert_one(data)
 
             articles_collection.update_one(
