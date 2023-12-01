@@ -2,6 +2,7 @@ from src.broker.wrapper import TransferObject
 from src.broker.broker import get_rabbitmq_connection
 import sys
 import json
+from datetime import datetime
 
 def like_callback(ch, method, properties, body, mongo):
     message = body.decode()
@@ -21,6 +22,8 @@ def like_callback(ch, method, properties, body, mongo):
         if operation == 'insert':
             if "tags" in data and isinstance(data["tags"], str):
                 data["tags"] = json.loads(data["tags"])
+            if "timestamp" in data and isinstance(data["timestamp"], str):
+                data["timestamp"] = datetime.strptime(data["timestamp"], "%m/%d/%Y, %H:%M:%S")
             likes_collection.insert_one(data)
 
             articles_collection.update_one(
