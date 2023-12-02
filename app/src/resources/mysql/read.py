@@ -5,7 +5,7 @@ from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
 from src.broker.wrapper import TransferObject
 from src.broker.broker import publish_to_queue
-
+import json
 
 class SQLReadResource(Resource):
     def post(self):
@@ -30,14 +30,15 @@ class SQLReadResource(Resource):
         read.save()
 
         transfer = {
-            "timestamp": read.timestamp,
+            "id": read.id,
+            "timestamp": read.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
             "type": 1,
             "user_id": read.user_id,
             "article_id": read.article_id,
             "region_id": read.user.region_id,
-            "tags": read.article.tags if read.article.tags else []
+            "tags": json.loads(read.article.tags) if read.article.tags else []
         }
-        transfer_object = TransferObject('insert', 'interaction', transfer)
+        transfer_object = TransferObject('insert', 'read', transfer)
         publish_to_queue(transfer_object.to_dict(), 'read')
 
         return ({"message": "read"}, 201)

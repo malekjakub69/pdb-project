@@ -40,9 +40,6 @@ class SQLArticleResource(Resource):
         transfer_object = TransferObject("insert", "article", article.get_full_dict())
         publish_to_queue(transfer_object.to_dict(), "article")
 
-        transfer_object = TransferObject("insert", "article", article.get_full_dict())
-        publish_to_queue(transfer_object.to_dict(), "article")
-
         return ({"article": article.get_full_dict()}, 201)
 
     def delete(self, article_id: int):

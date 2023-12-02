@@ -16,11 +16,13 @@ def article_callback(ch, method, properties, body, mongo):
         operation = transfer_object.operation
         data = transfer_object.data
 
-        data.pop('comments', None)
-        data.pop('likes', None)
-        data.pop('reads', None)
-
         if operation == 'insert':
+            if "tags" in data and isinstance(data["tags"], str):
+                data["tags"] = json.loads(data["tags"])
+
+            data.pop('comments', None)
+            data.pop('likes', None)
+            data.pop('reads', None)
             data["like_count"] = 0
             data["read_count"] = 0
             articles_collection.insert_one(data)
