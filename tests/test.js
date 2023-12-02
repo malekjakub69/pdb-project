@@ -11,7 +11,6 @@ function sleep(ms) {
 }
 
 describe("API Tests", function () {
-    /*
     // Get ALL endpoint tests
     it("should get all users", function (done) {
         chai.request(apiUrl)
@@ -287,7 +286,7 @@ describe("API Tests", function () {
                     });
             });
     });
-*/
+
     it("should create users, articles with tags, assign likes and reads, call /api/trends/<string:timeframe>, and test feeds", function (done) {
         const users = [
             { username: "User1", email: "user1@example.com", first_name: "User", last_name: "One" }, // Author of all articles

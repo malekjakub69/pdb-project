@@ -24,15 +24,16 @@ class TrendsResourceBase(Resource):
                 "$sort": {"totalInteractions": -1, "timestamp": -1},
             },
             {
-                "$limit": limit,
-            },
-            {
                 "$lookup": {
                     "from": "articles",
                     "localField": "_id",
                     "foreignField": "_id",
                     "as": "article",
                 }
+            },
+            {
+                # Needs to be here if article not bound to the interaction (article deleted)
+                "$limit": limit,
             },
             {"$unwind": "$article"},
         ]
