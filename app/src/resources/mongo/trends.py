@@ -1,9 +1,6 @@
 from flask_restful import Resource
-from bson import json_util
 from flask import current_app, jsonify
-from bson import ObjectId
 from datetime import timedelta, datetime
-
 
 class TrendsResourceBase(Resource):
     def get_trends(self, start_date, end_date, region_id=None, limit=10):
@@ -19,7 +16,7 @@ class TrendsResourceBase(Resource):
             },
             {
                 "$group": {
-                    "_id": "$article",
+                    "_id": "$article_id",
                     "totalInteractions": {"$sum": 1},
                 }
             },
@@ -42,13 +39,14 @@ class TrendsResourceBase(Resource):
 
         # Add region filter if provided
         if region_id:
-            region_id_object = ObjectId(region_id)
-            pipeline[0]["$match"]["region"] = region_id_object
+            if not region_id.startswith("region_"):
+                region_id = f"region_{region_id}"
+
+            pipeline[0]["$match"]["region_id"] = region_id
 
         result = interactions_collection.aggregate(pipeline)
-        serialized_result = json_util.dumps(list(result))
 
-        return json_util.loads(serialized_result)
+        return result
 
 
 class TrendsResourceWithRegion(TrendsResourceBase):
@@ -73,7 +71,7 @@ class TrendsResourceWithRegion(TrendsResourceBase):
         trends = self.get_trends(
             start_date=start_date, end_date=end_date, region_id=region_id, limit=15
         )
-        serialized_trends = json_util.dumps(list(trends))
+        serialized_trends = list(trends)
 
         return jsonify(
             {
@@ -83,7 +81,7 @@ class TrendsResourceWithRegion(TrendsResourceBase):
                 "end_date": end_date,
                 "timeframe": timeframe,
                 "data": serialized_trends,
-                "data_count": len(trends),
+                "data_count": len(serialized_trends),
             }
         )
 
@@ -107,8 +105,7 @@ class TrendsResourceWithoutRegion(TrendsResourceBase):
         start_date = current_time - time_range
         end_date = current_time
 
-        trends = self.get_trends(start_date=start_date, end_date=end_date, limit=15)
-        serialized_trends = json_util.dumps(list(trends))
+        trends = list(self.get_trends(start_date=start_date, end_date=end_date, limit=15))
 
         return jsonify(
             {
@@ -116,7 +113,7 @@ class TrendsResourceWithoutRegion(TrendsResourceBase):
                 "start_date": start_date,
                 "end_date": end_date,
                 "timeframe": timeframe,
-                "data": serialized_trends,
+                "data": trends,
                 "data_count": len(trends),
             }
         )

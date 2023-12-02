@@ -5,7 +5,7 @@ from flask_restful import Resource, request
 from werkzeug.exceptions import NotFound, BadRequest
 from src.broker.wrapper import TransferObject
 from src.broker.broker import publish_to_queue
-
+import json
 
 class SQLLikeResource(Resource):
     def post(self):
@@ -29,7 +29,16 @@ class SQLLikeResource(Resource):
         )
         like.save()
 
-        transfer_object = TransferObject('insert', 'interaction', like.get_full_dict())
+        transfer = {
+            "id": like.id,
+            "timestamp": like.timestamp.strftime("%m/%d/%Y, %H:%M:%S"),
+            "type": 0,
+            "user_id": like.user_id,
+            "article_id": like.article_id,
+            "region_id": like.user.region_id,
+            "tags": json.loads(like.article.tags) if like.article.tags else []
+        }
+        transfer_object = TransferObject('insert', 'like', transfer)
         publish_to_queue(transfer_object.to_dict(), 'like')
 
         return ({"message": "article_liked"}, 201)
@@ -53,7 +62,7 @@ class SQLUnlikeResource(Resource):
 
         like.delete()
 
-        transfer_object = TransferObject('delete', 'interaction', like.get_full_dict())
+        transfer_object = TransferObject('delete', 'like', like.get_full_dict())
         publish_to_queue(transfer_object.to_dict(), 'like')
 
         return ({"message": "article_unliked"}, 201)

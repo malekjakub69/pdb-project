@@ -57,7 +57,7 @@ def generate_dummy_data():
             elements=users_collection.find().distinct("_id")
         )
         article = {
-            "author": user_guid,
+            "author_id": user_guid,
             "title": fake.sentence(),
             "timestamp": fake.date_time_this_decade(),
             "perex": fake.text(max_nb_chars=200),
@@ -104,7 +104,7 @@ def generate_dummy_data():
 
             comment = {
                 "user": user_id,
-                "article": article_id,
+                "article_id": article_id,
                 "timestamp": fake.date_time_this_year(),
                 "text": fake.text(max_nb_chars=200),
             }
