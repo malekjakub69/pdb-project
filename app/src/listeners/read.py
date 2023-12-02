@@ -2,7 +2,7 @@ from src.broker.wrapper import TransferObject
 from src.broker.broker import get_rabbitmq_connection
 import sys
 import json
-import datetime
+from datetime import datetime
 
 
 def read_callback(ch, method, properties, body, mongo):

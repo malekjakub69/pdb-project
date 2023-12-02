@@ -1,7 +1,5 @@
 from flask_restful import Resource
-from bson import json_util
 from flask import current_app, jsonify
-from bson import ObjectId
 
 
 class UserResource(Resource):
@@ -17,17 +15,16 @@ class UserResource(Resource):
             {
                 "$lookup": {
                     "from": "regions",
-                    "localField": "region",
+                    "localField": "region_id",
                     "foreignField": "_id",
-                    "as": "region",
+                    "as": "region_id",
                 }
             },
-            {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
+            {"$unwind": {"path": "$region_id", "preserveNullAndEmptyArrays": True}},
         ]
 
         result = users_collection.aggregate(pipeline)
         user = list(result)
-        serialized_result = json_util.dumps(user)
 
         return jsonify(
             {
@@ -48,17 +45,16 @@ class UsersResource(Resource):
             {
                 "$lookup": {
                     "from": "regions",
-                    "localField": "region",
+                    "localField": "region_id",
                     "foreignField": "_id",
-                    "as": "region",
+                    "as": "region_id",
                 }
             },
-            {"$unwind": {"path": "$region", "preserveNullAndEmptyArrays": True}},
+            {"$unwind": {"path": "$region_id", "preserveNullAndEmptyArrays": True}},
         ]
 
         result = users_collection.aggregate(pipeline)
         users = list(result)
-        serialized_result = json_util.dumps(users)
 
         return jsonify(
             {

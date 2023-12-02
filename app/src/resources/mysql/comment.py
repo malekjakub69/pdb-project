@@ -49,4 +49,4 @@ class SQLCommentResource(Resource):
         transfer_object = TransferObject("delete", "comment", {"id": comment_id})
         publish_to_queue(transfer_object.to_dict(), "comment")
 
-        return "entity_deleted", 204
+        return "entity_deleted", 200
