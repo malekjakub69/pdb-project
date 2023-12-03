@@ -32,7 +32,7 @@ class SQLRegionResource(Resource):
         transfer_object = TransferObject("insert", "region", region.get_full_dict())
         publish_to_queue(transfer_object.to_dict(), "region")
 
-        return ({"user": region.get_full_dict()}, 201)
+        return ({"region": region.get_full_dict()}, 201)
 
     def delete(self, region_id: int):
         if not (region := Region.get_by_id(region_id)):
@@ -42,4 +42,4 @@ class SQLRegionResource(Resource):
         transfer_object = TransferObject("delete", "region", {"id": region_id})
         publish_to_queue(transfer_object.to_dict(), "region")
 
-        return "entity_deleted", 204
+        return "entity_deleted", 200

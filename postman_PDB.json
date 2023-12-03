@@ -49,7 +49,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\"last_name\": \"{{$randomLastName}}\"\n, \"region_iso_code\": \"{{$randomIsoCode}}\"\n}",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"username\": \"{{$randomUserName}}\",\n    \"first_name\": \"{{$randomFirstName}}\",\n    \"last_name\": \"{{$randomLastName}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -128,7 +128,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"{{$randomLoremWord}}\",\n    \"perex\": \"{{$randomLoremWord}}\",\n    \"content\": \"{{$randomLoremText}}\",\n    \"author_id\": 9\n}",
+					"raw": "{\n    \"title\": \"{{$randomLoremWord}}\",\n    \"perex\": \"{{$randomLoremWord}}\",\n    \"content\": \"{{$randomLoremText}}\",\n    \"author_id\": 9,\n    \"tags\": [\"tag1\", \"tag2\"]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -250,7 +250,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"author_id\":7,\n    \"article_id\":1,\n    \"comment\": \"{{$randomLoremText}}\",\n    \"country_name\": \"{{$randomCountry}}\"\n}",
+					"raw": "{\n    \"author_id\":3,\n    \"article_id\":2,\n    \"comment\":\"{{$randomLoremText}}\",\n    \"country_name\":\"{{$randomCountry}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,11 +258,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{server}}/comment",
+					"raw": "{{server}}/mysql/comment",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
+						"mysql",
 						"comment"
 					]
 				}
@@ -275,11 +276,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{server}}/comment/2",
+					"raw": "{{server}}/mysql/comment/2",
 					"host": [
 						"{{server}}"
 					],
 					"path": [
+						"mysql",
 						"comment",
 						"2"
 					]
@@ -312,6 +314,12 @@
 		{
 			"key": "server",
 			"value": "localhost:5123/api/mysql",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "server",
+			"value": "localhost:5123/api",
 			"type": "string"
 		}
 	]

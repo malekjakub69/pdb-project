@@ -22,7 +22,7 @@ class SQLCommentResource(Resource):
             raise BadRequest("article_id_required")
         if not (article := Article.get_by_id(data["article_id"])):
             raise NotFound("entity_not_found")
-        if article.max_comments <= len(article.comments):
+        if article.comments_count >= article.max_comments:
             raise BadRequest("max_comments_reached")
 
         comment = Comment(
@@ -32,6 +32,9 @@ class SQLCommentResource(Resource):
             country_name=data["country_name"],
         )
         comment.save()
+
+        article.comments_count += 1
+        article.save()
 
         transfer_object = TransferObject("insert", "comment", comment.get_full_dict())
         publish_to_queue(transfer_object.to_dict(), "comment")
@@ -46,4 +49,4 @@ class SQLCommentResource(Resource):
         transfer_object = TransferObject("delete", "comment", {"id": comment_id})
         publish_to_queue(transfer_object.to_dict(), "comment")
 
-        return "entity_deleted", 204
+        return "entity_deleted", 200

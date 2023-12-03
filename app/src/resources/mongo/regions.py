@@ -18,13 +18,12 @@ class RegionResource(Resource):
 
         result = regions_collection.aggregate(pipeline)
         region = list(result)
-        serialized_result = json_util.dumps(region)
 
         return jsonify(
             {
                 "message": "Region data",
                 "region_id": region_id,
-                "data": serialized_result,
+                "data": region,
                 "data_count": len(region),
             }
         )
@@ -36,12 +35,11 @@ class RegionsResource(Resource):
 
         result = regions_collection.find({})
         regions = list(result)
-        serialized_result = json_util.dumps(regions)
 
         return jsonify(
             {
                 "message": "Regions",
-                "data": serialized_result,
+                "data": regions,
                 "data_count": len(regions),
             }
         )

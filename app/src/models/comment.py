@@ -1,5 +1,7 @@
 from src.models import db
 from src.models.base import BaseModel
+from sqlalchemy import event
+from werkzeug.exceptions import BadRequest
 
 
 class Comment(BaseModel):
@@ -34,3 +36,9 @@ class Comment(BaseModel):
             "article_id": self.article_id,
             "country_name": self.country_name,
         }
+
+
+@event.listens_for(Comment, "before_insert")
+def receive_before_insert(mapper, connection, target):
+    if not target.article.can_add_comment:
+        raise BadRequest("Max comments limit reached for this article")
